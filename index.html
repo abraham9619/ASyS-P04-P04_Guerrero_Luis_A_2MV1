@@ -1,0 +1,322 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 4: Convoluci&oacute;n y Correlaci&oacute;n de se&ntilde;ales</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-10-04"><meta name="DC.source" content="Practica4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 4: Convoluci&oacute;n y Correlaci&oacute;n de se&ntilde;ales</h1><!--introduction--><div><ul><li>Dur&aacute;n espino Rodrigo Baltazar</li><li>Guerrero Aguilar Luis Abraham</li><li>L&oacute;pez Casas Leonel Isaac</li><li>Tuda Alonzo Roberto Samuel</li></ul></div><p>Grupo: 2MV1</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Objetivos</a></li><li><a href="#2">Introducci&oacute;n</a></li><li><a href="#3">Desarrollo</a></li></ul></div><h2 id="1">Objetivos</h2><div><ul><li>Conocer m&eacute;todos b&aacute;sicos de integraci&oacute;n num&eacute;rica</li><li>Manipulaci&oacute;n de instrucciones en MATLAB</li><li>Simular convoluciones y correlaciones de se&ntilde;ales continuas</li><li>Simular convoluciones y correlaciones de se&ntilde;ales discretas</li></ul></div><h2 id="2">Introducci&oacute;n</h2><div><ul><li>Teorema Fundamental del C&aacute;lculo.</li></ul></div><p>Esta es una de sus versiones. Si <img src="Practica4_eq18096895394918367257.png" alt="$f$"> es integrable, y <img src="Practica4_eq07046613320630549221.png" alt="$dF(x)/dx = f(x)$"></p><p><img src="Practica4_eq09423994757048426362.png" alt="$$\int_a^b f(x)dx = F(b)-F(a)$$"></p><p>Es el area definida por la gr&aacute;fica de la funci&oacute;n <img src="Practica4_eq04734559138005355634.png" alt="$f(a)$">, la recta <img src="Practica4_eq13345571597004244696.png" alt="$l_1 ((a,0),(a,f(a)))$">, la recta <img src="Practica4_eq10031597624120957636.png" alt="$l_2 ((b,0),(b,f(b)))$"> y la recta <img src="Practica4_eq16720614791469843154.png" alt="$l_3 ((a,0),(b,0))$">.</p><p>Para comprender mejor este Teorema realizaremos el siguiente ejemplo:</p><p><img src="Practica4_eq14260462621779918830.png" alt="$f(x) = e^{-x^2}$"></p><p>Aplicando el Teorema fundamental del C&aacute;lculo debemos primero verificar si la funci&oacute;n es integrable.</p><p><img src="Practica4_eq18101114180853163292.png" alt="$$\int_a^b f(x) = \int_{-1}^1 e^{-x^2}dx = F(1)-F(-1)$$"></p><p>Se sabe que la funci&oacute;n <img src="Practica4_eq17663307419741296505.png" alt="$f(x)$"> de integrable por lo que se cumple la primera parte del Teorema. Ahora lo que se debe encontrar es una antiderivada de la funci&oacute;n <img src="Practica4_eq17663307419741296505.png" alt="$f(x)$"> pero la antiderivada de <img src="Practica4_eq14478400592765037054.png" alt="$e^{-x^2}$"> no existe, pero realmente el problema no es encontrar una antiderivada sino encontrar el area que delitima los intervalos en la funci&oacute;n dada. Entonces lo que haremos ser&aacute; evaluar un Polinomio <img src="Practica4_eq00441311847593852498.png" alt="$P(x)$"> que se aproxime a la funci&oacute;n dada, para esto aproximaremos la funci&oacute;n <img src="Practica4_eq13952741825936817703.png" alt="$P(x) = 1$"> y al realizar las operaciones nos queda que:</p><p><img src="Practica4_eq00629565071998194917.png" alt="$$\int_{-1}^1 P(x)dx = \int_{-1}^1 dx = x|_{-1}^1 = 2$$"></p><p>Dado este resultado decimo que:</p><p><img src="Practica4_eq10236489141551764786.png" alt="$$\int_{-1}^1 e^{-x^2}dx < 2$$"></p><p><img src="Practica4_eq14069270114647463180.png" alt="$$\int_{-1}^1 e^{-x^2}$$ es aproximadamente $$1.4936$$"></p><div><ul><li>Newton-Cotes (regla de trapecio).</li></ul></div><p>El objetivo de las funciones de Newton-Cotes es igual aproximar la funci&oacute;n pero de la siguiente manera:</p><p><img src="Practica4_eq10473604452877375087.png" alt="$$\int_a^b f(x)dx$$"></p><p>En donde:</p><p><img src="Practica4_eq16125776823309553035.png" alt="$$f(x) = P(x)+[f^{n+1}(\epsilon(x))/(n+1)!] (x-x_0)(x-x_1)...(x-x_n)$$"></p><p>con x E [a,b]</p><p>F&oacute;rmula cerrada de (n+1) puntos de Newton-Cotes</p><div><ul><li><img src="Practica4_eq11426877150115665720.png" alt="$x_0 = a$"></li><li><img src="Practica4_eq09701226581966076371.png" alt="$x_n = b$"></li><li><img src="Practica4_eq15244661732277601052.png" alt="$h = (b-a)/n; (paso)$"></li><li><img src="Practica4_eq07692325846355041068.png" alt="$x_i = x_0 + ih; i = 0,1,..,n$"></li></ul></div><p>Regla de trapecio (n=1).</p><p><img src="Practica4_eq00545011257814169755.png" alt="$$\int_{x_0}^{x_1} f(x)dx = [h/2][f(x_0)+f(x_1)]-[h^3/12]f^{''}(\epsilon)$$"></p><p><img src="Practica4_eq08569457114183714566.png" alt="$$x_0<\epsilon<x_1$$"></p><p>En donde las variables son:</p><div><ul><li><img src="Practica4_eq11426877150115665720.png" alt="$x_0 = a$"></li><li><img src="Practica4_eq05262857399093620079.png" alt="$x_1 = b$"></li><li><img src="Practica4_eq13914713668278096371.png" alt="$h = b-a$"></li><li><img src="Practica4_eq15369733794912379806.png" alt="$x_i = a+i(b-a); i = 0,1$"></li></ul></div><p>Ejemplo: Usando la funci&oacute;n ya conocida.</p><p><img src="Practica4_eq10065552840184656407.png" alt="$con -1<\epsilon<1$"></p><p><img src="Practica4_eq13348471880145436798.png" alt="$$\int_{-1}^1 e^{-x^2}dx = [2/2][e^{-1}+e^{-1}]-[8/12][-2e^{-\epsilon^2}(1-2\epsilon^2)]$$"></p><p><img src="Practica4_eq05352340816824871702.png" alt="$$= 0.7357+[4/3]e^{-\epsilon^2}(1-2\epsilon^2)$$"></p><div><ul><li>Regla de Simpson (n=2)</li></ul></div><p><img src="Practica4_eq07541492751141299664.png" alt="$$\int_{x_0}^{x_2} f(x)dx = [h/3][f(x_0)+4f(x_1)+f(x_2)]-[h^5/90]f^{(4)}(\epsilon)$$"></p><p><img src="Practica4_eq13791271982249681398.png" alt="$$x_0<\epsilon<x_2$$"></p><p>En donde las variables son:</p><div><ul><li><img src="Practica4_eq11426877150115665720.png" alt="$x_0 = a$"></li><li><img src="Practica4_eq08656997906298987828.png" alt="$x_2 = b$"></li><li><img src="Practica4_eq06152454837175853530.png" alt="$h = (b-a)/2$"></li><li><img src="Practica4_eq15928809615176107152.png" alt="$x_i = a+ih; i = 0,1,2$"></li><li><img src="Practica4_eq06255677887882807152.png" alt="$x_1 = a+h = (b+a)/2$"></li></ul></div><p>Ejemplo: Usando la misma funci&oacute;n pero ahora aplicando la f&oacute;rmula de Simpson.</p><p><img src="Practica4_eq10065552840184656407.png" alt="$con -1<\epsilon<1$"></p><p><img src="Practica4_eq07002632695911966893.png" alt="$$\int_{-1}^1 e^{-x^2}dx = [1/3][e^{-1}+4e^0+e^{-1}]-[1/90][-4e^{-\epsilon^2}(-4\epsilon^4+12\epsilon^2-3)]$$"></p><p><img src="Practica4_eq06641442149338314631.png" alt="$$= 1.5785+[2/45]e^{-\epsilon^2}(-4\epsilon^4+12\epsilon^2-3)$$"></p><div><ul><li>Regla de tres octavos de Simpson (n=3)</li></ul></div><p><img src="Practica4_eq04733238882835777905.png" alt="$$\int_{x_0}^{x_3} f(x)dx = [3h/8][f(x_0)+3f(x_1)+3f(x_2)+f(x_3)]-[3h^5/80]f^{(4)}(\epsilon)$$"></p><p><img src="Practica4_eq12639947368492533761.png" alt="$$x_0<\epsilon<x_3$$"></p><p>En donde las variables son:</p><div><ul><li><img src="Practica4_eq11426877150115665720.png" alt="$x_0 = a$"></li><li><img src="Practica4_eq18188260579059719841.png" alt="$x_3 = b$"></li><li><img src="Practica4_eq11925260912016404382.png" alt="$h = (b-a)/3$"></li><li><img src="Practica4_eq05695821224037150210.png" alt="$x_i = a+ih; i = 0,1,2,3$"></li><li><img src="Practica4_eq10951179744125873973.png" alt="$x_1 = a+h = (2a+b)/3$"></li><li><img src="Practica4_eq12054822005584859816.png" alt="$x_2 = (2b+a)/3$"></li></ul></div><p>Ejemplo: Usando la misma funci&oacute;n pero ahora aplicando la f&oacute;rmula de tres octavos de Simpson.</p><p><img src="Practica4_eq10065552840184656407.png" alt="$con -1<\epsilon<1$"></p><p><img src="Practica4_eq13508302671187779338.png" alt="$$\int_{-1}^1 e^{-x^2}dx = [3/8][2/3][e^{-1}+3e^{-1/4}+3e^{-1/4}+3e^{-1}]-[3/80][2/3]^5[-4e^{-\epsilon^2}(-4\epsilon^4+12\epsilon^2-3)]$$"></p><p><img src="Practica4_eq09281329171629481478.png" alt="$$= 1.5261+[8/405]e^{-\epsilon^2}(-4\epsilon^4+12\epsilon^2-3)$$"></p><h2 id="3">Desarrollo</h2><div><ul><li>Problema 1. Para el PR04 reporte la gr&aacute;fica de la simulaci&oacute;n n&uacute;merica de la convoluci&oacute;n y compare con el resultado analitico que obtuvo para el problema 1, esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;n <img src="Practica4_eq11172307641939531096.png" alt="$convconm$"> y posteriormente se tendr&aacute; que mostrar (mediante Publish) la gr&aacute;fica tanto de las se&ntilde;ales involucradas como el resultado de la convoluci&oacute;n, y en esta &uacute;ltima gr&aacute;ficara su resultado analitico, se tendra que incluir el resultado analitico.</li></ul></div><pre class="codeinput">t = -2:0.1:2;
+x = exp(-t).*(t&gt;=0 &amp; t&lt;=1);
+h = t.*(t&gt;=-1 &amp; t&lt;=1);
+convconm(x,h,t)
+</pre><img vspace="5" hspace="5" src="Practica4_01.png" alt=""> <div><ul><li>Problema 2. Para el PR05 reporte la gr&aacute;fica de la simulaci&oacute;n n&uacute;merica de la correlaci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema e), esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;n <img src="Practica4_eq11172307641939531096.png" alt="$convconm$"> y posteriormente se tendr&aacute; que mostrar (mediante Publish) la gr&aacute;fica tanto de las se&ntilde;ales involucradas como el resultado de la correlaci&oacute;n, y en esta &uacute;ltima su resultado analitico, se tendr&aacute; que incluir el resultado an&aacute;litico.</li></ul></div><pre class="codeinput">t = -5:0.1:5;
+x = (t&gt;=0 &amp; t&lt;=3)-(t&gt;3 &amp; t&lt;=4);
+h = (t&gt;3 &amp; t&lt;=4)-(t&gt;=0 &amp; t&lt;=3);
+convconm(x,h,t)
+</pre><img vspace="5" hspace="5" src="Practica4_02.png" alt=""> <div><ul><li>Problema 3. Realice la simulaci&oacute;n de la convoluci&oacute;n de las se&ntilde;ales (c) con (d) del problema 3.1.1</li></ul></div><pre class="codeinput">n=-10:10;
+a=[0 0 0 0 0 0 0 -9 -6 -3 0 3 6 9 0 0 0 0 0 0 0];
+b=[0 0 0 0 0 0 0 0 4 2 0 2 4 0 0 0 0 0 0 0 0];
+convdisc([n;a],[n;b])
+</pre><img vspace="5" hspace="5" src="Practica4_03.png" alt=""> <div><ul><li>Problema 4. Realice la simulaci&oacute;n de la correlaci&oacute;n de las se&ntilde;ales (c) con (d) del problema 3.1.1</li></ul></div><pre class="codeinput">n=-10:10;
+a=[0 0 0 0 0 0 0 9 6 3 0 -3 -6 -9 0 0 0 0 0 0 0];
+b=[0 0 0 0 0 0 0 0 4 2 0 2 4 0 0 0 0 0 0 0 0];
+convdisc([n;a],[n;b])
+</pre><img vspace="5" hspace="5" src="Practica4_04.png" alt=""> <div><ul><li>Problema 5. Realice la convoluci&oacute;n de las se&ntilde;ales (c) con (d) del problema 3.1.1 utilizando el comando <img src="Practica4_eq04666266244619676725.png" alt="$conv$"> de MATLAB, muestre el c&oacute;digo utilizado y gr&aacute;fique el resultado, sugerencia: Utilice las propiedades de traslaci&oacute;n de la convoluci&oacute;n.</li></ul></div><pre class="codeinput">n=-10:10;
+a=[0 0 0 0 0 0 0 -9 -6 -3 0 3 6 9 0 0 0 0 0 0 0];
+b=[0 0 0 0 0 0 0 0 4 2 0 2 4 0 0 0 0 0 0 0 0];
+subplot(1,3,1)
+stem(n,a);
+grid <span class="string">on</span>;
+title(<span class="string">'x[n]'</span>);
+subplot(1,3,2)
+stem(n,b)
+grid <span class="string">on</span>;
+title(<span class="string">'h[n]'</span>);
+subplot(1,3,3)
+y = conv(a,b);
+stem(y)
+grid <span class="string">on</span>;
+title(<span class="string">'x[n]*h[n]'</span>);
+</pre><img vspace="5" hspace="5" src="Practica4_05.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 4: Convolución y Correlación de señales
+%
+% * Durán espino Rodrigo Baltazar
+% * Guerrero Aguilar Luis Abraham
+% * López Casas Leonel Isaac
+% * Tuda Alonzo Roberto Samuel
+%
+% Grupo: 2MV1
+%
+%% Objetivos
+%
+% * Conocer métodos básicos de integración numérica
+% * Manipulación de instrucciones en MATLAB
+% * Simular convoluciones y correlaciones de señales continuas
+% * Simular convoluciones y correlaciones de señales discretas
+%
+%% Introducción
+%
+% * Teorema Fundamental del Cálculo.
+%
+% Esta es una de sus versiones. Si $f$ es integrable, y $dF(x)/dx = f(x)$
+%
+% $$\int_a^b f(x)dx = F(b)-F(a)$$
+%
+% Es el area definida por la gráfica de la función $f(a)$, la recta
+% $l_1 ((a,0),(a,f(a)))$, la recta $l_2 ((b,0),(b,f(b)))$ y la recta 
+% $l_3 ((a,0),(b,0))$.
+%
+% Para comprender mejor este Teorema realizaremos el siguiente ejemplo:
+%
+% $f(x) = e^{-x^2}$
+%
+% Aplicando el Teorema fundamental del Cálculo debemos primero verificar
+% si la función es integrable.
+%
+% $$\int_a^b f(x) = \int_{-1}^1 e^{-x^2}dx = F(1)-F(-1)$$
+%
+% Se sabe que la función $f(x)$ de integrable por lo que se cumple la
+% primera parte del Teorema. Ahora lo que se debe encontrar es una
+% antiderivada de la función $f(x)$ pero la antiderivada de $e^{-x^2}$ no
+% existe, pero realmente el problema no es encontrar una antiderivada sino
+% encontrar el area que delitima los intervalos en la función dada.
+% Entonces lo que haremos será evaluar un Polinomio $P(x)$ que se aproxime
+% a la función dada, para esto aproximaremos la función $P(x) = 1$ y al
+% realizar las operaciones nos queda que:
+%
+% $$\int_{-1}^1 P(x)dx = \int_{-1}^1 dx = x|_{-1}^1 = 2$$
+%
+% Dado este resultado decimo que:
+%
+% $$\int_{-1}^1 e^{-x^2}dx < 2$$
+%
+% $$\int_{-1}^1 e^{-x^2}$$ es aproximadamente $$1.4936$$
+%
+% * Newton-Cotes (regla de trapecio).
+%
+% El objetivo de las funciones de Newton-Cotes es igual aproximar la
+% función pero de la siguiente manera:
+%
+% $$\int_a^b f(x)dx$$
+%
+% En donde:
+%
+% $$f(x) = P(x)+[f^{n+1}(\epsilon(x))/(n+1)!] (x-x_0)(x-x_1)...(x-x_n)$$
+%
+% con x E [a,b]
+%
+% Fórmula cerrada de (n+1) puntos de Newton-Cotes
+%
+% * $x_0 = a$
+% * $x_n = b$
+% * $h = (b-a)/n; (paso)$
+% * $x_i = x_0 + ih; i = 0,1,..,n$
+%
+% Regla de trapecio (n=1).
+%
+% $$\int_{x_0}^{x_1} f(x)dx = [h/2][f(x_0)+f(x_1)]-[h^3/12]f^{''}(\epsilon)$$
+%
+% $$x_0<\epsilon<x_1$$
+%
+% En donde las variables son:
+%
+% * $x_0 = a$
+% * $x_1 = b$
+% * $h = b-a$
+% * $x_i = a+i(b-a); i = 0,1$
+%
+% Ejemplo: Usando la función ya conocida. 
+%
+% $con -1<\epsilon<1$
+%
+% $$\int_{-1}^1 e^{-x^2}dx = [2/2][e^{-1}+e^{-1}]-[8/12][-2e^{-\epsilon^2}(1-2\epsilon^2)]$$
+%
+% $$= 0.7357+[4/3]e^{-\epsilon^2}(1-2\epsilon^2)$$
+%
+% * Regla de Simpson (n=2)
+%
+% $$\int_{x_0}^{x_2} f(x)dx = [h/3][f(x_0)+4f(x_1)+f(x_2)]-[h^5/90]f^{(4)}(\epsilon)$$
+%
+% $$x_0<\epsilon<x_2$$
+%
+% En donde las variables son:
+%
+% * $x_0 = a$
+% * $x_2 = b$
+% * $h = (b-a)/2$
+% * $x_i = a+ih; i = 0,1,2$
+% * $x_1 = a+h = (b+a)/2$
+%
+% Ejemplo: Usando la misma función pero ahora aplicando la fórmula de
+% Simpson.
+%
+% $con -1<\epsilon<1$
+%
+% $$\int_{-1}^1 e^{-x^2}dx = [1/3][e^{-1}+4e^0+e^{-1}]-[1/90][-4e^{-\epsilon^2}(-4\epsilon^4+12\epsilon^2-3)]$$
+%
+% $$= 1.5785+[2/45]e^{-\epsilon^2}(-4\epsilon^4+12\epsilon^2-3)$$
+%
+% * Regla de tres octavos de Simpson (n=3)
+%
+% $$\int_{x_0}^{x_3} f(x)dx = [3h/8][f(x_0)+3f(x_1)+3f(x_2)+f(x_3)]-[3h^5/80]f^{(4)}(\epsilon)$$
+%
+% $$x_0<\epsilon<x_3$$
+%
+% En donde las variables son:
+%
+% * $x_0 = a$
+% * $x_3 = b$
+% * $h = (b-a)/3$
+% * $x_i = a+ih; i = 0,1,2,3$
+% * $x_1 = a+h = (2a+b)/3$
+% * $x_2 = (2b+a)/3$
+%
+% Ejemplo: Usando la misma función pero ahora aplicando la fórmula de
+% tres octavos de Simpson.
+%
+% $con -1<\epsilon<1$
+%
+% $$\int_{-1}^1 e^{-x^2}dx = [3/8][2/3][e^{-1}+3e^{-1/4}+3e^{-1/4}+3e^{-1}]-[3/80][2/3]^5[-4e^{-\epsilon^2}(-4\epsilon^4+12\epsilon^2-3)]$$
+%
+% $$= 1.5261+[8/405]e^{-\epsilon^2}(-4\epsilon^4+12\epsilon^2-3)$$
+%
+%% Desarrollo
+%
+% * Problema 1. Para el PR04 reporte la gráfica de la simulación númerica
+% de la convolución y compare con el resultado analitico que obtuvo para el
+% problema 1, esto es, su práctica tendrá que incluir una llamada a la
+% función $convconm$ y posteriormente se tendrá que mostrar (mediante
+% Publish) la gráfica tanto de las señales involucradas como el resultado
+% de la convolución, y en esta última gráficara su resultado analitico, se
+% tendra que incluir el resultado analitico.
+%
+t = -2:0.1:2;
+x = exp(-t).*(t>=0 & t<=1);
+h = t.*(t>=-1 & t<=1);
+convconm(x,h,t)
+%%
+%
+% * Problema 2. Para el PR05 reporte la gráfica de la simulación númerica
+% de la correlación y compare con el resultado análitico que obtuvo para el
+% problema e), esto es, su práctica tendrá que incluir una llamada a la
+% función $convconm$ y posteriormente se tendrá que mostrar (mediante
+% Publish) la gráfica tanto de las señales involucradas como el resultado
+% de la correlación, y en esta última su resultado analitico, se tendrá que
+% incluir el resultado análitico.
+%
+t = -5:0.1:5;
+x = (t>=0 & t<=3)-(t>3 & t<=4);
+h = (t>3 & t<=4)-(t>=0 & t<=3);
+convconm(x,h,t)
+%%
+%
+% * Problema 3. Realice la simulación de la convolución de las señales (c)
+% con (d) del problema 3.1.1
+%
+
+n=-10:10;
+a=[0 0 0 0 0 0 0 -9 -6 -3 0 3 6 9 0 0 0 0 0 0 0];
+b=[0 0 0 0 0 0 0 0 4 2 0 2 4 0 0 0 0 0 0 0 0];
+convdisc([n;a],[n;b])
+
+%%
+%
+% * Problema 4. Realice la simulación de la correlación de las señales (c)
+% con (d) del problema 3.1.1
+%
+
+n=-10:10;
+a=[0 0 0 0 0 0 0 9 6 3 0 -3 -6 -9 0 0 0 0 0 0 0];
+b=[0 0 0 0 0 0 0 0 4 2 0 2 4 0 0 0 0 0 0 0 0];
+convdisc([n;a],[n;b])
+
+%%
+%
+% * Problema 5. Realice la convolución de las señales (c) con (d) del
+% problema 3.1.1 utilizando el comando $conv$ de MATLAB, muestre el código
+% utilizado y gráfique el resultado, sugerencia: Utilice las propiedades de
+% traslación de la convolución.
+%
+
+n=-10:10;
+a=[0 0 0 0 0 0 0 -9 -6 -3 0 3 6 9 0 0 0 0 0 0 0];
+b=[0 0 0 0 0 0 0 0 4 2 0 2 4 0 0 0 0 0 0 0 0];
+subplot(1,3,1)
+stem(n,a);
+grid on;
+title('x[n]');
+subplot(1,3,2)
+stem(n,b)
+grid on;
+title('h[n]');
+subplot(1,3,3)
+y = conv(a,b);
+stem(y)
+grid on;
+title('x[n]*h[n]');
+
+%%
+##### SOURCE END #####
+--></body></html>
